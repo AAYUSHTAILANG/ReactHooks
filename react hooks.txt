@@ -1,0 +1,143 @@
+			REACT HOOKS
+			===========
+-used in functional components only.
+-2018 ->React Hook Library.
+
+I)useState():
+-------------
+-useState is used to add state to functional components.
+-It returns an array with two elements:
+ 1)the current state value and 
+ 2)a function that lets you update it.
+
+const[count,setCount]=useState(Initial value);
+-count->state value
+-setCount->function to modify data.
+
+#ex:
+----
+import React, { useState } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+
+
+#Limitations:
+-------------
+-cannot be written inside conditional and iterative statements as well in function.It is only allowed in the component.
+
+-even if we call it twice the increment will happen only once.
+solution:
+When the new state depends on the previous state, it's recommended to use the functional update form of setState to ensure the latest state is used.
+setCount(prevCount => prevCount + 1);
+
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    // Using the functional update form to increment count
+    setCount(prevCount => prevCount + 1);
+    setCount(prevCount => prevCount + 1);
+  };
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={increment}>
+        Click me
+      </button>
+    </div>
+  );
+}
+
+export default Counter;
+
+-When the state is an object, updating it requires merging the new state with the existing state. This can lead to unintentional overwrites.
+
+const [user, setUser] = useState({ name: '', age: 0 });
+
+solution:
+setUser({ ...user, age: 25 });
+
+----------------------------------------------------------
+II)useEffect():
+---------------
+useEffect(a,b)
+a->callback function
+b->dependencies array(optional)
+
+
+
+1)useEffect(()=>{     })
+-only one parameter ie callback function
+-gets called for every update.
+		 ------------
+-equivalent to "componetDidUpdate"
+		-----------------
+
+2)useEffect(()=>{     },[   ])
+-two parameters
+  -callback function
+  -Empty array
+-gets executed only once after component mounting.
+		----------------------------------
+-equivalent to "ComponentDidMount"
+		-----------------
+3)useEffect(()=>{     },[ nm ])
+-two parameters
+  -callback function
+  -array with values
+-gets called on every update on nm.
+		------------------
+
+4)useEffect(()=>{return()=>{}})
+-only one parameter ie callback function having return
+-gets called when component unmounts.
+-equivalent to "ComponentWillUnmount".
+		--------------------
+
+----------------------------------------------------------
+III)useReducer():
+---------------
+-Alternate to useState()
+-for complex data
+	-objects
+	-array of objects
+-mostly used in redux
+
+const[emp,setEmp]=useReducer(reducer,inits)
+	-emp->data
+	-setEmp->function
+	-reducer->function to modify that state
+	-inits->initial state
+
+const inits
+{
+	empid:0,
+	ename:"NA",
+	salary:"0",
+	dept:" "
+}
+
+const reducer=(state,action)
+{switch (action.type)
+	{
+	case 'update':
+		return {...state,action.field:action.value}
+	case 'reset'
+		return inits;
+	}
+}
+
+	
